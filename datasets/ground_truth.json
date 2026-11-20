@@ -1,0 +1,946 @@
+{
+  "meta": {
+    "gt_version": "1.0",
+    "seed": 42,
+    "reference_date": "2025-01-01",
+    "generator": "datasets/make_datasets.py",
+    "pandas_version": "2.2.3",
+    "numpy_version": "2.1.3",
+    "float_digits": 6
+  },
+  "datasets": {
+    "sales": {
+      "file": "synthetic/sales.csv",
+      "format": "csv",
+      "read_hint": "pd.read_csv(path)",
+      "traps": [
+        "25 exact duplicate rows, adjacent to their originals",
+        "missing region (40) and discount (60) in unique rows",
+        "8 genuine bulk stationery orders (quantity 300-600): quantity outliers",
+        "revenue is heavily right-skewed (Laptop/Phone); IQR flags many orders",
+        "Q4 seasonality; 2024 has +5% prices and about +10% volume"
+      ],
+      "injected": {
+        "n_unique_orders": 2000,
+        "n_exact_duplicate_rows": 25,
+        "n_rows_raw": 2025,
+        "n_bulk_orders_qty_ge_300": 8,
+        "n_missing_region_unique_rows": 40,
+        "n_missing_discount_unique_rows": 60
+      },
+      "facts": {
+        "n_rows_raw": 2025,
+        "n_cols": 9,
+        "columns": [
+          "order_id",
+          "order_date",
+          "region",
+          "product",
+          "category",
+          "quantity",
+          "unit_price",
+          "discount",
+          "revenue"
+        ],
+        "dtypes_raw": {
+          "order_id": "int64",
+          "order_date": "object",
+          "region": "object",
+          "product": "object",
+          "category": "object",
+          "quantity": "int64",
+          "unit_price": "float64",
+          "discount": "float64",
+          "revenue": "float64"
+        },
+        "n_exact_duplicate_rows": 25,
+        "n_duplicate_order_id": 25,
+        "n_rows_dedup": 2000,
+        "missing_raw": {
+          "order_id": 0,
+          "order_date": 0,
+          "region": 41,
+          "product": 0,
+          "category": 0,
+          "quantity": 0,
+          "unit_price": 0,
+          "discount": 60,
+          "revenue": 0
+        },
+        "missing_dedup": {
+          "order_id": 0,
+          "order_date": 0,
+          "region": 40,
+          "product": 0,
+          "category": 0,
+          "quantity": 0,
+          "unit_price": 0,
+          "discount": 60,
+          "revenue": 0
+        },
+        "date_min": "2023-01-01",
+        "date_max": "2024-12-31",
+        "total_revenue_raw": 1122175.09,
+        "total_revenue_dedup": 1107048.97,
+        "mean_revenue_dedup": 553.524485,
+        "median_revenue_dedup": 251.67,
+        "revenue_sum_by_region_dedup": {
+          "Central": 219854.4,
+          "East": 225091.67,
+          "North": 254261.4,
+          "South": 196986.87,
+          "West": 180636.04
+        },
+        "revenue_mean_by_region_dedup": {
+          "Central": 549.636,
+          "East": 551.69527,
+          "North": 576.556463,
+          "South": 511.654208,
+          "West": 554.098282
+        },
+        "order_count_by_region_dedup": {
+          "Central": 400,
+          "East": 408,
+          "North": 441,
+          "South": 385,
+          "West": 326
+        },
+        "top_region_by_revenue_dedup": "North",
+        "revenue_share_pct_by_category_dedup": {
+          "Electronics": 77.831821,
+          "Furniture": 17.898003,
+          "Stationery": 4.270176
+        },
+        "quantity_sum_by_product_dedup": {
+          "Chair": 963,
+          "Desk": 341,
+          "Headphones": 1177,
+          "Laptop": 501,
+          "Notebook": 4361,
+          "Pen Pack": 4837,
+          "Phone": 737
+        },
+        "top_product_by_quantity_dedup": "Pen Pack",
+        "mean_discount_dedup_skipna": 0.065593,
+        "share_orders_with_discount_pct_dedup": 60.412371,
+        "monthly_revenue_dedup": {
+          "2023-01": 41235.15,
+          "2023-02": 21460.86,
+          "2023-03": 36455.78,
+          "2023-04": 40220.15,
+          "2023-05": 48437.16,
+          "2023-06": 40800.73,
+          "2023-07": 43088.89,
+          "2023-08": 61158.97,
+          "2023-09": 47015.36,
+          "2023-10": 43208.62,
+          "2023-11": 39339.08,
+          "2023-12": 61841.36,
+          "2024-01": 37398.66,
+          "2024-02": 36159.05,
+          "2024-03": 40933.25,
+          "2024-04": 40009.93,
+          "2024-05": 48510.16,
+          "2024-06": 44139.21,
+          "2024-07": 47580.8,
+          "2024-08": 37853.82,
+          "2024-09": 47017.26,
+          "2024-10": 61639.59,
+          "2024-11": 55793.69,
+          "2024-12": 85751.44
+        },
+        "best_month_by_revenue_dedup": "2024-12",
+        "revenue_by_year_dedup": {
+          "2023": 524262.11,
+          "2024": 582786.86
+        },
+        "yoy_revenue_growth_pct_2024_dedup": 11.163261,
+        "corr_quantity_revenue_pearson_dedup": 0.165109,
+        "corr_unit_price_revenue_pearson_dedup": 0.796916,
+        "revenue_iqr_bounds_dedup": [
+          -949.1225,
+          1718.5175
+        ],
+        "n_revenue_outliers_iqr_dedup": 167,
+        "n_quantity_ge_300_dedup": 8,
+        "revenue_skew_dedup": 2.085163
+      }
+    },
+    "hr": {
+      "file": "synthetic/hr.xlsx",
+      "format": "xlsx",
+      "read_hint": "pd.read_excel(path, sheet_name=\"employees\") and sheet_name=\"departments\"",
+      "traps": [
+        "first sheet is README (notes), data is on sheets 'employees' and 'departments'",
+        "5 employees have dept_id 99 which does not exist in 'departments'",
+        "tenure must use the fixed reference date 2025-01-01, not today"
+      ],
+      "injected": {
+        "first_sheet": "README",
+        "sheet_names": [
+          "README",
+          "employees",
+          "departments"
+        ],
+        "n_employees": 300,
+        "n_departments": 6,
+        "n_orphan_employees": 5,
+        "orphan_dept_ids": [
+          99
+        ]
+      },
+      "facts": {
+        "sheet_names": [
+          "README",
+          "employees",
+          "departments"
+        ],
+        "first_sheet": "README",
+        "n_employees": 300,
+        "n_departments": 6,
+        "employee_columns": [
+          "emp_id",
+          "full_name",
+          "dept_id",
+          "hire_date",
+          "gender",
+          "performance_score",
+          "monthly_salary_usd",
+          "remote"
+        ],
+        "department_columns": [
+          "dept_id",
+          "dept_name",
+          "location",
+          "annual_budget_usd"
+        ],
+        "hire_date_dtype": "datetime64[ns]",
+        "n_orphan_employees": 5,
+        "orphan_dept_ids": [
+          99
+        ],
+        "n_employees_after_inner_join": 295,
+        "mean_salary_by_dept_name": {
+          "Engineering": 3147.471264,
+          "Finance": 2572.285714,
+          "HR": 1825.909091,
+          "Marketing": 2015.0,
+          "Operations": 1961.454545,
+          "Sales": 2135.322581
+        },
+        "top_dept_by_mean_salary": "Engineering",
+        "top_dept_mean_salary": 3147.471264,
+        "headcount_by_dept_name": {
+          "Engineering": 87,
+          "Finance": 35,
+          "HR": 22,
+          "Marketing": 34,
+          "Operations": 55,
+          "Sales": 62
+        },
+        "headcount_by_location": {
+          "Da Nang": 77,
+          "HCMC": 96,
+          "Hanoi": 122
+        },
+        "gender_counts": {
+          "Female": 137,
+          "Male": 163
+        },
+        "female_share_pct": 45.666667,
+        "mean_salary_by_gender": {
+          "Female": 2433.357664,
+          "Male": 2411.717791
+        },
+        "mean_salary_all": 2421.6,
+        "median_salary_all": 2255.0,
+        "corr_performance_salary_pearson": 0.136925,
+        "median_tenure_years_at_reference_date": 6.123203,
+        "remote_share_pct": 35.666667,
+        "hires_by_year": {
+          "2012": 25,
+          "2013": 32,
+          "2014": 17,
+          "2015": 22,
+          "2016": 16,
+          "2017": 19,
+          "2018": 23,
+          "2019": 29,
+          "2020": 34,
+          "2021": 22,
+          "2022": 25,
+          "2023": 25,
+          "2024": 11
+        }
+      }
+    },
+    "sensors": {
+      "file": "synthetic/sensors.tsv",
+      "format": "tsv",
+      "read_hint": "pd.read_csv(path, sep=\"\\t\")",
+      "traps": [
+        "rows are shuffled: must sort by timestamp before time plots",
+        "S2 has a 12-hour outage; S3 has 20 random missing hours",
+        "S1 temperature is frozen for 10 consecutive hours",
+        "30 missing humidity values"
+      ],
+      "injected": {
+        "expected_rows_per_sensor": 744,
+        "missing_hours_per_sensor": {
+          "S1": 0,
+          "S2": 12,
+          "S3": 20
+        },
+        "s2_outage_start": "2024-03-10 08:00:00",
+        "s2_outage_hours": 12,
+        "s1_frozen_start": "2024-03-15 00:00:00",
+        "s1_frozen_hours": 10,
+        "n_missing_humidity": 30,
+        "rows_shuffled": true
+      },
+      "facts": {
+        "n_rows": 2200,
+        "columns": [
+          "timestamp",
+          "sensor_id",
+          "temperature_c",
+          "humidity_pct"
+        ],
+        "n_sensors": 3,
+        "is_sorted_by_timestamp_in_file": false,
+        "timestamp_min": "2024-03-01 00:00:00",
+        "timestamp_max": "2024-03-31 23:00:00",
+        "expected_rows_per_sensor": 744,
+        "rows_per_sensor": {
+          "S1": 744,
+          "S2": 732,
+          "S3": 724
+        },
+        "missing_hours_per_sensor": {
+          "S1": 0,
+          "S2": 12,
+          "S3": 20
+        },
+        "longest_gap_hours_per_sensor": {
+          "S1": 0,
+          "S2": 12,
+          "S3": 2
+        },
+        "longest_constant_temp_run_per_sensor": {
+          "S1": 10,
+          "S2": 2,
+          "S3": 2
+        },
+        "longest_constant_temp_run_start_per_sensor": {
+          "S1": "2024-03-15 00:00:00",
+          "S2": "2024-03-02 03:00:00",
+          "S3": "2024-03-04 16:00:00"
+        },
+        "stuck_sensor": "S1",
+        "stuck_sensor_run_hours": 10,
+        "daily_mean_temp_per_sensor": {
+          "S1": {
+            "2024-03-01": 23.96,
+            "2024-03-02": 24.030833,
+            "2024-03-03": 24.21125,
+            "2024-03-04": 24.257083,
+            "2024-03-05": 24.214167,
+            "2024-03-06": 24.336667,
+            "2024-03-07": 24.428333,
+            "2024-03-08": 24.322083,
+            "2024-03-09": 24.362083,
+            "2024-03-10": 24.395,
+            "2024-03-11": 24.64375,
+            "2024-03-12": 24.475833,
+            "2024-03-13": 24.608333,
+            "2024-03-14": 24.739583,
+            "2024-03-15": 24.0325,
+            "2024-03-16": 24.814167,
+            "2024-03-17": 24.739167,
+            "2024-03-18": 24.917083,
+            "2024-03-19": 24.800417,
+            "2024-03-20": 24.87,
+            "2024-03-21": 25.120417,
+            "2024-03-22": 24.952917,
+            "2024-03-23": 25.172083,
+            "2024-03-24": 25.219167,
+            "2024-03-25": 25.118333,
+            "2024-03-26": 25.322083,
+            "2024-03-27": 25.4025,
+            "2024-03-28": 25.360417,
+            "2024-03-29": 25.234583,
+            "2024-03-30": 25.370833,
+            "2024-03-31": 25.455833
+          },
+          "S2": {
+            "2024-03-01": 27.125417,
+            "2024-03-02": 27.020833,
+            "2024-03-03": 26.89625,
+            "2024-03-04": 27.039583,
+            "2024-03-05": 27.281667,
+            "2024-03-06": 27.2875,
+            "2024-03-07": 27.15125,
+            "2024-03-08": 27.49125,
+            "2024-03-09": 27.369583,
+            "2024-03-10": 25.019167,
+            "2024-03-11": 27.372083,
+            "2024-03-12": 27.490417,
+            "2024-03-13": 27.44625,
+            "2024-03-14": 27.575417,
+            "2024-03-15": 27.5375,
+            "2024-03-16": 27.772083,
+            "2024-03-17": 27.820417,
+            "2024-03-18": 27.8725,
+            "2024-03-19": 27.929583,
+            "2024-03-20": 27.917917,
+            "2024-03-21": 28.066667,
+            "2024-03-22": 28.145417,
+            "2024-03-23": 28.151667,
+            "2024-03-24": 28.170833,
+            "2024-03-25": 28.12,
+            "2024-03-26": 28.262917,
+            "2024-03-27": 28.295833,
+            "2024-03-28": 28.335,
+            "2024-03-29": 28.464167,
+            "2024-03-30": 28.515417,
+            "2024-03-31": 28.479583
+          },
+          "S3": {
+            "2024-03-01": 20.915833,
+            "2024-03-02": 20.916667,
+            "2024-03-03": 21.317826,
+            "2024-03-04": 21.1125,
+            "2024-03-05": 21.299167,
+            "2024-03-06": 21.067826,
+            "2024-03-07": 21.285455,
+            "2024-03-08": 21.160417,
+            "2024-03-09": 21.403182,
+            "2024-03-10": 21.324583,
+            "2024-03-11": 21.188261,
+            "2024-03-12": 21.470417,
+            "2024-03-13": 21.588182,
+            "2024-03-14": 21.715417,
+            "2024-03-15": 21.5825,
+            "2024-03-16": 21.980435,
+            "2024-03-17": 21.7775,
+            "2024-03-18": 21.993913,
+            "2024-03-19": 21.810909,
+            "2024-03-20": 22.14087,
+            "2024-03-21": 22.176522,
+            "2024-03-22": 21.907391,
+            "2024-03-23": 22.109091,
+            "2024-03-24": 22.1775,
+            "2024-03-25": 22.187917,
+            "2024-03-26": 22.0725,
+            "2024-03-27": 22.295217,
+            "2024-03-28": 22.178261,
+            "2024-03-29": 22.389583,
+            "2024-03-30": 22.426667,
+            "2024-03-31": 22.547083
+          }
+        },
+        "missing_raw": {
+          "timestamp": 0,
+          "sensor_id": 0,
+          "temperature_c": 0,
+          "humidity_pct": 30
+        },
+        "n_missing_humidity": 30,
+        "mean_temp_per_sensor": {
+          "S1": 24.738306,
+          "S2": 27.702117,
+          "S3": 21.726285
+        },
+        "max_temp": {
+          "value": 32.93,
+          "sensor_id": "S2",
+          "timestamp": "2024-03-29 15:00:00"
+        },
+        "corr_temp_humidity_pearson_all": -0.626127,
+        "corr_temp_humidity_pearson_per_sensor": {
+          "S1": -0.835532,
+          "S2": -0.826986,
+          "S3": -0.830659
+        },
+        "daily_mean_temp_S1": {
+          "2024-03-01": 23.96,
+          "2024-03-02": 24.030833,
+          "2024-03-03": 24.21125,
+          "2024-03-04": 24.257083,
+          "2024-03-05": 24.214167,
+          "2024-03-06": 24.336667,
+          "2024-03-07": 24.428333,
+          "2024-03-08": 24.322083,
+          "2024-03-09": 24.362083,
+          "2024-03-10": 24.395,
+          "2024-03-11": 24.64375,
+          "2024-03-12": 24.475833,
+          "2024-03-13": 24.608333,
+          "2024-03-14": 24.739583,
+          "2024-03-15": 24.0325,
+          "2024-03-16": 24.814167,
+          "2024-03-17": 24.739167,
+          "2024-03-18": 24.917083,
+          "2024-03-19": 24.800417,
+          "2024-03-20": 24.87,
+          "2024-03-21": 25.120417,
+          "2024-03-22": 24.952917,
+          "2024-03-23": 25.172083,
+          "2024-03-24": 25.219167,
+          "2024-03-25": 25.118333,
+          "2024-03-26": 25.322083,
+          "2024-03-27": 25.4025,
+          "2024-03-28": 25.360417,
+          "2024-03-29": 25.234583,
+          "2024-03-30": 25.370833,
+          "2024-03-31": 25.455833
+        },
+        "hottest_hour_of_day_mean_all": 14
+      }
+    },
+    "customers": {
+      "file": "synthetic/customers.json",
+      "format": "json",
+      "read_hint": "pd.read_json(path) or pd.DataFrame(json.load(open(path, encoding='utf-8')))",
+      "traps": [
+        "UTF-8 Vietnamese text (names, cities)",
+        "30 ages stored as strings",
+        "null total_spent (25) and email (40)"
+      ],
+      "injected": {
+        "n_rows": 500,
+        "n_age_stored_as_string": 30,
+        "n_missing_total_spent": 25,
+        "n_missing_email": 40,
+        "encoding": "utf-8"
+      },
+      "facts": {
+        "n_rows": 500,
+        "columns": [
+          "customer_id",
+          "full_name",
+          "city",
+          "signup_date",
+          "age",
+          "segment",
+          "n_orders",
+          "total_spent",
+          "is_active",
+          "email"
+        ],
+        "n_age_stored_as_string": 30,
+        "pandas_read_json_age_dtype": "int64",
+        "mean_age": 44.066,
+        "median_age": 44.0,
+        "missing": {
+          "customer_id": 0,
+          "full_name": 0,
+          "city": 0,
+          "signup_date": 0,
+          "age": 0,
+          "segment": 0,
+          "n_orders": 0,
+          "total_spent": 25,
+          "is_active": 0,
+          "email": 40
+        },
+        "columns_with_missing": [
+          "total_spent",
+          "email"
+        ],
+        "segment_counts": {
+          "Consumer": 276,
+          "Corporate": 155,
+          "Home Office": 69
+        },
+        "mean_total_spent_by_segment_skipna": {
+          "Consumer": 309.291955,
+          "Corporate": 575.985411,
+          "Home Office": 359.552381
+        },
+        "active_share_pct": 68.2,
+        "mean_total_spent_by_is_active_skipna": {
+          "False": 395.642387,
+          "True": 399.039875
+        },
+        "customers_by_city": {
+          "Cần Thơ": 42,
+          "Hà Nội": 175,
+          "Hải Phòng": 61,
+          "TP. Hồ Chí Minh": 172,
+          "Đà Nẵng": 50
+        },
+        "top_city_by_customers": "Hà Nội",
+        "corr_n_orders_total_spent_pearson": 0.798276,
+        "signups_by_year": {
+          "2022": 166,
+          "2023": 150,
+          "2024": 184
+        }
+      }
+    },
+    "eu_sales": {
+      "file": "synthetic/eu_sales.csv",
+      "format": "csv",
+      "read_hint": "pd.read_csv(path, sep=\";\", decimal=\",\")",
+      "traps": [
+        "separator ';' and decimal ','; default read_csv breaks",
+        "dates are day-first dd.mm.yyyy"
+      ],
+      "injected": {
+        "n_rows": 600,
+        "n_cols": 6,
+        "sep": ";",
+        "decimal": ",",
+        "date_format": "%d.%m.%Y"
+      },
+      "facts": {
+        "n_rows": 600,
+        "n_cols": 6,
+        "columns": [
+          "date",
+          "country",
+          "product",
+          "units",
+          "revenue_eur",
+          "cost_eur"
+        ],
+        "dtypes": {
+          "date": "object",
+          "country": "object",
+          "product": "object",
+          "units": "int64",
+          "revenue_eur": "float64",
+          "cost_eur": "float64"
+        },
+        "numeric_columns": [
+          "units",
+          "revenue_eur",
+          "cost_eur"
+        ],
+        "naive_read_csv_default": {
+          "ok": true,
+          "n_cols": 1,
+          "n_numeric_cols": 1
+        },
+        "total_revenue_eur": 443880.26,
+        "total_cost_eur": 288099.51,
+        "gross_margin_pct": 35.095219,
+        "revenue_by_country": {
+          "DE": 152509.33,
+          "ES": 57353.29,
+          "FR": 101110.98,
+          "IT": 65758.64,
+          "NL": 67148.02
+        },
+        "top_country_by_revenue": "DE",
+        "units_by_product": {
+          "P-A": 2601,
+          "P-B": 2312,
+          "P-C": 3562,
+          "P-D": 1052,
+          "P-E": 1735
+        },
+        "monthly_revenue_eur": {
+          "2024-01": 34309.5,
+          "2024-02": 34962.35,
+          "2024-03": 40809.87,
+          "2024-04": 25611.16,
+          "2024-05": 38585.57,
+          "2024-06": 36517.76,
+          "2024-07": 25757.47,
+          "2024-08": 36543.1,
+          "2024-09": 32078.29,
+          "2024-10": 40293.54,
+          "2024-11": 48482.82,
+          "2024-12": 49928.83
+        },
+        "best_month_by_revenue": "2024-12",
+        "n_dates_with_day_le_12": 228
+      }
+    },
+    "clinic": {
+      "file": "synthetic/clinic_messy.xlsx",
+      "format": "xlsx",
+      "read_hint": "pd.read_excel(path, sheet_name=\"patients\")",
+      "traps": [
+        "visit_date mixes Excel dates, ISO text, DD/MM/YYYY text and 'Month D, YYYY'",
+        "9 impossible dates, 7 free-text dates, 12 blank dates",
+        "age: negatives, >120, 'unknown', numbers stored as text, blanks",
+        "sex has mixed spellings; systolic_bp has 0 and >250 values",
+        "cost_vnd text values use '.' as thousands separator",
+        "rules are documented in sheet 'data_dictionary'"
+      ],
+      "injected": {
+        "n_rows": 400,
+        "visit_date_kinds": {
+          "iso_text": 40,
+          "dmy_text": 40,
+          "long_text": 16,
+          "impossible": 9,
+          "garbage": 7,
+          "blank": 12,
+          "excel_date": 276
+        },
+        "n_visit_date_missing": 12,
+        "n_visit_date_invalid": 16,
+        "n_visit_date_valid": 372,
+        "n_visit_date_valid_text": 96,
+        "visits_per_month_valid": {
+          "2024-01": 30,
+          "2024-02": 29,
+          "2024-03": 29,
+          "2024-04": 35,
+          "2024-05": 38,
+          "2024-06": 33,
+          "2024-07": 40,
+          "2024-08": 37,
+          "2024-09": 26,
+          "2024-10": 30,
+          "2024-11": 19,
+          "2024-12": 26
+        },
+        "n_age_missing": 3,
+        "n_age_invalid": 15,
+        "n_age_numeric_text": 8,
+        "mean_age_valid": 48.337696,
+        "n_sex_missing": 10,
+        "n_bp_missing": 5,
+        "n_bp_invalid": 7,
+        "n_cost_text": 10,
+        "total_cost_vnd": 293921000
+      },
+      "facts": {
+        "sheet_names": [
+          "patients",
+          "data_dictionary"
+        ],
+        "n_rows": 400,
+        "columns": [
+          "patient_id",
+          "visit_date",
+          "age",
+          "sex",
+          "systolic_bp",
+          "diagnosis",
+          "cost_vnd"
+        ],
+        "visit_date_dtype_raw": "object",
+        "n_visit_date_missing": 12,
+        "n_visit_date_invalid": 16,
+        "n_visit_date_valid": 372,
+        "n_visit_date_valid_text": 96,
+        "invalid_visit_date_values": [
+          "--",
+          "2024-00-10",
+          "2024-02-30",
+          "2024-04-31",
+          "2024-06-31",
+          "2024-13-01",
+          "29/02/2023",
+          "30/02/2024",
+          "31/04/2024",
+          "32/01/2024",
+          "?",
+          "TBD",
+          "no date",
+          "not recorded",
+          "pending",
+          "unknown"
+        ],
+        "visits_per_month_valid": {
+          "2024-01": 30,
+          "2024-02": 29,
+          "2024-03": 29,
+          "2024-04": 35,
+          "2024-05": 38,
+          "2024-06": 33,
+          "2024-07": 40,
+          "2024-08": 37,
+          "2024-09": 26,
+          "2024-10": 30,
+          "2024-11": 19,
+          "2024-12": 26
+        },
+        "busiest_month_valid": "2024-07",
+        "n_age_missing": 3,
+        "n_age_invalid": 15,
+        "n_age_valid": 382,
+        "n_age_numeric_text": 8,
+        "mean_age_valid": 48.337696,
+        "sex_raw_distinct_values": [
+          "F",
+          "Female",
+          "M",
+          "Male",
+          "f",
+          "female",
+          "m",
+          "male"
+        ],
+        "sex_counts_normalized": {
+          "F": 205,
+          "M": 185,
+          "unknown": 10
+        },
+        "n_sex_missing": 10,
+        "n_bp_missing": 5,
+        "n_bp_invalid": 7,
+        "mean_bp_valid": 124.342784,
+        "mean_bp_valid_by_diagnosis": {
+          "Asthma": 128.102041,
+          "Checkup": 123.917293,
+          "Diabetes": 124.481481,
+          "Flu": 123.842105,
+          "Hypertension": 123.065789
+        },
+        "n_cost_text": 10,
+        "total_cost_vnd": 293921000,
+        "mean_cost_vnd_by_diagnosis": {
+          "Asthma": 988480.0,
+          "Checkup": 212503.649635,
+          "Diabetes": 1622614.035088,
+          "Flu": 351337.662338,
+          "Hypertension": 1213189.873418
+        },
+        "top_diagnosis_by_mean_cost": "Diabetes",
+        "diagnosis_counts": {
+          "Asthma": 50,
+          "Checkup": 137,
+          "Diabetes": 57,
+          "Flu": 77,
+          "Hypertension": 79
+        }
+      }
+    },
+    "transactions": {
+      "file": "synthetic/transactions.parquet",
+      "format": "parquet",
+      "read_hint": "pd.read_parquet(path)",
+      "traps": [
+        "daily ice_cream and fan sales are strongly correlated only because both follow temperature (temp_c); correlation is not causation",
+        "categorical dtypes: use observed=True in groupby"
+      ],
+      "injected": {
+        "n_rows": 45057,
+        "n_days": 366,
+        "n_stores": 20,
+        "confounder": "temp_c",
+        "temperature_driven_categories": [
+          "ice_cream",
+          "fan",
+          "sunscreen"
+        ],
+        "flat_categories": [
+          "bread",
+          "milk",
+          "coffee"
+        ]
+      },
+      "facts": {
+        "n_rows": 45057,
+        "columns": [
+          "txn_id",
+          "ts",
+          "store_id",
+          "product_category",
+          "quantity",
+          "unit_price",
+          "amount",
+          "payment_method",
+          "temp_c"
+        ],
+        "dtypes": {
+          "txn_id": "int64",
+          "ts": "datetime64[ns]",
+          "store_id": "category",
+          "product_category": "category",
+          "quantity": "int32",
+          "unit_price": "float64",
+          "amount": "float64",
+          "payment_method": "category",
+          "temp_c": "float64"
+        },
+        "n_stores": 20,
+        "n_categories": 6,
+        "n_days": 366,
+        "mean_daily_temp": 24.210656,
+        "ts_min": "2024-01-01T07:09:28",
+        "ts_max": "2024-12-31T21:48:43",
+        "total_amount": 292923.71,
+        "revenue_by_category": {
+          "bread": 27009.08,
+          "coffee": 47752.12,
+          "fan": 130390.15,
+          "ice_cream": 22123.99,
+          "milk": 30838.26,
+          "sunscreen": 34810.11
+        },
+        "units_by_category": {
+          "bread": 22505,
+          "coffee": 19106,
+          "fan": 5214,
+          "ice_cream": 12294,
+          "milk": 20561,
+          "sunscreen": 3664
+        },
+        "mean_daily_units_by_category": {
+          "bread": 61.489071,
+          "coffee": 52.202186,
+          "fan": 14.245902,
+          "ice_cream": 33.590164,
+          "milk": 56.177596,
+          "sunscreen": 10.010929
+        },
+        "revenue_by_store": {
+          "ST01": 10967.82,
+          "ST02": 17378.36,
+          "ST03": 11049.52,
+          "ST04": 15731.89,
+          "ST05": 21237.85,
+          "ST06": 8691.72,
+          "ST07": 22368.49,
+          "ST08": 18243.77,
+          "ST09": 12893.6,
+          "ST10": 10973.42,
+          "ST11": 18669.32,
+          "ST12": 16787.78,
+          "ST13": 23282.87,
+          "ST14": 9584.66,
+          "ST15": 13330.85,
+          "ST16": 10724.24,
+          "ST17": 10360.01,
+          "ST18": 19172.43,
+          "ST19": 11302.25,
+          "ST20": 10172.86
+        },
+        "top_store_by_revenue": "ST13",
+        "payment_share_pct": {
+          "card": 45.107309,
+          "cash": 30.017533,
+          "e-wallet": 24.875158
+        },
+        "busiest_hour_by_txn_count": 15,
+        "monthly_revenue": {
+          "2024-01": 16157.12,
+          "2024-02": 16277.1,
+          "2024-03": 17884.16,
+          "2024-04": 21827.03,
+          "2024-05": 28887.03,
+          "2024-06": 33276.55,
+          "2024-07": 36434.6,
+          "2024-08": 32473.38,
+          "2024-09": 30078.93,
+          "2024-10": 22778.09,
+          "2024-11": 19664.36,
+          "2024-12": 17185.36
+        },
+        "corr_daily_units_icecream_fan": 0.683919,
+        "corr_daily_units_icecream_temp": 0.837933,
+        "corr_daily_units_fan_temp": 0.806455,
+        "corr_daily_units_bread_icecream": 0.105775,
+        "partial_corr_icecream_fan_given_temp": 0.025294
+      }
+    }
+  }
+}

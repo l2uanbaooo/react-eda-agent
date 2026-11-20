@@ -1,0 +1,15 @@
+# Pinned dependencies. Keep this file ASCII-only: pip on Windows decodes it with
+# the locale codepage (cp1252) and crashes on Vietnamese characters.
+# Python 3.11 (local 3.11.9, Docker image python:3.11.9-slim-bookworm).
+
+# Data/analysis stack: shared with the Docker sandbox image (one source of truth).
+# pandas is pinned to 2.2.x on purpose: pandas 3.x changes the default string
+# dtype and copy-on-write; Qwen2.5-Coder was trained mostly on pandas 2.x code.
+-r sandbox/requirements-sandbox.txt
+
+# Host only: LLM HTTP client and LangChain tool wrapper (GD3)
+requests==2.32.3
+langchain-core==0.3.28
+
+# Tests
+pytest==8.3.4
