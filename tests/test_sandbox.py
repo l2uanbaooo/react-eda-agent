@@ -82,11 +82,21 @@ def test_stderr_and_warnings_captured(sb):
 @pytest.mark.parametrize("ds", ["sales", "hr", "sensors", "customers", "eu_sales", "clinic", "transactions"])
 def test_load_data_inside_sandbox(sb, ds):
     rel = GT["datasets"][ds]["file"]
-    r = sb.run(f"df = load_data({sb.data_path(rel)!r})\nprint(len(df), df.attrs['source']['format'])")
+    sheet = ", sheet='employees'" if ds == "hr" else ""  # sandbox default is the FIRST sheet (README)
+    r = sb.run(f"df = load_data({sb.data_path(rel)!r}{sheet})\nprint(len(df), df.attrs['source']['format'])")
     assert r.ok, r.error
     facts = GT["datasets"][ds]["facts"]
     expected_rows = facts.get("n_rows_raw") or facts.get("n_rows") or facts.get("n_employees")
     assert int(r.stdout.split()[0]) == expected_rows
+
+
+def test_sandbox_load_data_gives_no_sheet_hint(sb):
+    # Inside the sandbox, load_data(path) on a workbook returns the FIRST sheet,
+    # like pd.read_excel, and no list of sheets (only pre-profiling lists them).
+    r = sb.run(f"df = load_data({sb.data_path('synthetic/hr.xlsx')!r})\n"
+               "print(df.attrs['source'], list(df.columns))")
+    assert r.ok, r.error
+    assert "'sheet': 'README'" in r.stdout and "'sheets'" not in r.stdout and "['note']" in r.stdout
 
 
 def test_answer_variable(sb):

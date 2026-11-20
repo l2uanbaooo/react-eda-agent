@@ -11,5 +11,9 @@
 requests==2.32.3
 langchain-core==0.3.28
 
+# Eval: code quality of the agent's code (GD5)
+pylint==3.3.3
+ruff==0.8.4
+
 # Tests
 pytest==8.3.4

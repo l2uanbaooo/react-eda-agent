@@ -1,0 +1,4 @@
+# The build context is the project root, but the image needs only these two files.
+*
+!sandbox/requirements-sandbox.txt
+!requirements-lock.txt

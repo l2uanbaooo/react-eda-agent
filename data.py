@@ -10,14 +10,22 @@ worker), the Streamlit UI and the report. Only pandas/numpy/openpyxl/stdlib.
     profile_file(path, sheet=None, max_chars=6000) -> str   (adds the sheet list)
 
 Formats: csv / txt (delimiter and decimal comma sniffed), tsv, xlsx/xlsm (sheet
-by name or index; default = the largest sheet), json (records, columns dict,
-or {"key": [records]}), jsonl/ndjson, parquet.
+by name or index), json (records, columns dict, or {"key": [records]}),
+jsonl/ndjson, parquet.
+
+Excel sheet when sheet=None (policy, one function everywhere):
+  "largest" (default: UI, report) - the sheet with the most cells;
+  "first"   (agent sandbox, all eval configs; set via EDA_DEFAULT_SHEET by the
+             sandbox) - the first sheet, exactly like pd.read_excel, so the
+             loader itself never hints which sheet holds the data.
+df.attrs["source"] records the loaded sheet only, never the list of sheets.
 JSON is loaded with json.load + DataFrame so raw types are kept: a column
 holding 34 and "34" stays object (pd.read_json would silently coerce it).
 """
 from __future__ import annotations
 
 import json
+import os
 import re
 from collections import Counter
 from pathlib import Path
@@ -115,12 +123,25 @@ def list_sheets(path: str | Path) -> list[dict]:
         wb.close()
 
 
-def _pick_sheet(path: Path, sheet: str | int | None) -> str:
+SHEET_POLICIES = ("largest", "first")
+
+
+def default_sheet_policy() -> str:
+    policy = os.environ.get("EDA_DEFAULT_SHEET", "largest").strip().lower()
+    if policy not in SHEET_POLICIES:
+        raise DataLoadError(f"EDA_DEFAULT_SHEET must be one of {SHEET_POLICIES}, got {policy!r}")
+    return policy
+
+
+def _pick_sheet(path: Path, sheet: str | int | None, policy: str | None = None) -> str:
     sheets = list_sheets(path)
     names = [s["name"] for s in sheets]
     if not names:
         raise DataLoadError(f"{path.name}: workbook has no sheets")
     if sheet is None:
+        policy = policy or default_sheet_policy()
+        if policy == "first":
+            return names[0]
         return max(sheets, key=lambda s: (s["rows"] * s["cols"], -names.index(s["name"])))["name"]
     if isinstance(sheet, int):
         if not 0 <= sheet < len(names):
@@ -152,8 +173,13 @@ def _json_frame(path: Path) -> pd.DataFrame:
 # Public loader
 # ----------------------------------------------------------------------------
 def load_data(path: str | Path, sheet: str | int | None = None, *, sep: str | None = None,
-              decimal: str | None = None, encoding: str | None = None) -> pd.DataFrame:
-    """Load any supported file into a DataFrame. df.attrs["source"] says how."""
+              decimal: str | None = None, encoding: str | None = None,
+              sheet_policy: str | None = None) -> pd.DataFrame:
+    """Load any supported file into a DataFrame. df.attrs["source"] says how.
+
+    sheet_policy ("largest"/"first") only matters for Excel with sheet=None;
+    None = environment variable EDA_DEFAULT_SHEET, else "largest".
+    """
     path = Path(path)
     if not path.exists():
         raise DataLoadError(f"File not found: {path}")
@@ -168,9 +194,9 @@ def load_data(path: str | Path, sheet: str | int | None = None, *, sep: str | No
         df = pd.read_csv(path, sep=sep, decimal=decimal, encoding=encoding, low_memory=False)
         info.update(sep=sep, decimal=decimal, encoding=encoding)
     elif fmt == "excel":
-        name = _pick_sheet(path, sheet)
+        name = _pick_sheet(path, sheet, sheet_policy)
         df = pd.read_excel(path, sheet_name=name, engine="openpyxl")
-        info.update(sheet=name, sheets=[s["name"] for s in list_sheets(path)])
+        info.update(sheet=name)
     elif fmt == "json":
         df = _json_frame(path)
     elif fmt == "jsonl":
@@ -282,15 +308,17 @@ def profile(df: pd.DataFrame, max_chars: int = 6000, top_k: int = 5) -> str:
 
 
 def profile_file(path: str | Path, sheet: str | int | None = None, max_chars: int = 6000) -> str:
+    """Profile for the prompt. Excel: lists ALL sheets and profiles the largest
+    one (or `sheet`); this sheet list is the only sheet hint the agent gets."""
     path = Path(path)
     head = []
     sheets = list_sheets(path)
     if sheets:
         head.append("SHEETS: " + "; ".join(f"{s['name']} ({s['rows']} rows x {s['cols']} cols)"
                                              for s in sheets))
-    df = load_data(path, sheet)
+    df = load_data(path, sheet, sheet_policy="largest")
     if sheets:
-        head.append(f"LOADED SHEET: {df.attrs['source']['sheet']} "
-                    "(use load_data(path, sheet='<name>') for another sheet)")
+        name = df.attrs["source"]["sheet"]
+        head.append(f"PROFILED SHEET: {name} (load it with load_data(path, sheet={name!r}))")
     body = profile(df, max_chars=max(500, max_chars - sum(len(h) + 1 for h in head)))
     return "\n".join(head + [body])

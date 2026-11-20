@@ -41,7 +41,19 @@ def test_hr_default_sheet_is_largest_not_first():
     df = load_data(SYN / "hr.xlsx")
     assert df.attrs["source"]["sheet"] == "employees"
     assert len(df) == GT["hr"]["facts"]["n_employees"]
-    assert df.attrs["source"]["sheets"] == ["README", "employees", "departments"]
+    assert "sheets" not in df.attrs["source"]  # the loader never lists the other sheets
+
+
+def test_sheet_policy_first_behaves_like_pandas(monkeypatch):
+    df = load_data(SYN / "hr.xlsx", sheet_policy="first")
+    assert df.attrs["source"]["sheet"] == "README"
+    pd.testing.assert_frame_equal(df, pd.read_excel(SYN / "hr.xlsx"))
+    monkeypatch.setenv("EDA_DEFAULT_SHEET", "first")   # how the sandbox sets it
+    assert load_data(SYN / "hr.xlsx").attrs["source"]["sheet"] == "README"
+    assert load_data(SYN / "hr.xlsx", sheet_policy="largest").attrs["source"]["sheet"] == "employees"
+    monkeypatch.setenv("EDA_DEFAULT_SHEET", "biggest")
+    with pytest.raises(DataLoadError, match="EDA_DEFAULT_SHEET"):
+        load_data(SYN / "hr.xlsx")
 
 
 def test_hr_explicit_sheets():
@@ -169,5 +181,5 @@ def test_profile_is_deterministic_and_bounded():
 def test_profile_file_lists_sheets():
     p = profile_file(SYN / "hr.xlsx", max_chars=3000)
     assert p.splitlines()[0].startswith("SHEETS: README (5 rows x 1 cols); employees (300 rows")
-    assert "LOADED SHEET: employees" in p
+    assert "PROFILED SHEET: employees (load it with load_data(path, sheet='employees'))" in p
     assert len(p) <= 3000

@@ -79,7 +79,7 @@ class DockerSandbox(Sandbox):
             raise SandboxError(msg)
         if not image_exists(self.cfg.docker_image):
             raise SandboxError(f"Docker image {self.cfg.docker_image!r} not found. Build it with:\n"
-                               f"  docker build -t {self.cfg.docker_image} -f sandbox/Dockerfile sandbox")
+                               f"  docker build -t {self.cfg.docker_image} -f sandbox/Dockerfile .")
 
     def _command(self):
         cfg = self.cfg
@@ -99,6 +99,7 @@ class DockerSandbox(Sandbox):
             "--mount", f"type=bind,source={_mount_src(DATA_PY_PATH)},target=/opt/eda/data.py,readonly",
             "-e", "EDA_DATA_DIR=/data", "-e", "EDA_OUTPUT_DIR=/output", "-e", "EDA_CODE_DIR=/opt/eda",
             "-e", f"EDA_MAX_STDOUT_CHARS={cfg.max_stdout_chars}",
+            "-e", f"EDA_DEFAULT_SHEET={cfg.sandbox_default_sheet}",
             cfg.docker_image, "python", "-u", "/opt/eda/worker.py",
         ]
         return cmd, None, None

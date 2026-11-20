@@ -306,3 +306,21 @@ PASS nhóm 5 = mọi tiêu chí bắt buộc áp dụng được đều = 1. V�
 - Chấm tay đối chiếu: chọn ngẫu nhiên (seed cố định) **8 báo cáo** của agent, dán **cùng prompt rubric** + báo cáo vào ChatGPT (cuộc trò chuyện mới mỗi báo cáo, xóa thông tin hệ thống nào tạo báo cáo). Ghi vào `eval/judge_calibration.xlsx` (cột: `report_id`, `judge`, `c1`…`c6`, `total`, `run_date`, `chatgpt_model`).
 - Báo cáo: tương quan Spearman và độ lệch trung bình tuyệt đối giữa Qwen-judge và ChatGPT-judge. Nếu lệch lớn, nói rõ trong README; không đổi rubric để "khớp" sau khi đã thấy điểm.
 - Lưu ý thiên lệch: nếu sau này dùng ChatGPT chấm cả báo cáo do chính ChatGPT viết, phải ghi rõ đó là tự chấm.
+
+---
+
+## 13. Quyết định bổ sung sau GĐ3 (đã chốt, ảnh hưởng tới cách đọc kết quả)
+
+### 13.1 Sheet Excel mặc định và lợi thế ở G1_02
+
+- Chỉ có MỘT `load_data()`; khi không truyền `sheet=`, sheet được chọn theo chính sách:
+  - **UI và báo cáo**: `largest` (sheet nhiều ô nhất), tiện cho người dùng.
+  - **Sandbox của agent, mọi cấu hình eval** (`config.sandbox_default_sheet = "first"`, truyền vào container qua `EDA_DEFAULT_SHEET`): `first`, giống hệt `pd.read_excel`. `df.attrs["source"]` chỉ ghi sheet đã đọc, **không** liệt kê các sheet khác.
+- Hệ quả: gợi ý về sheet chỉ đến từ **pre-profiling** (dòng `SHEETS:` liệt kê mọi sheet và kích thước). Ở cấu hình **baseline** (profiling tắt) agent **không nhận gợi ý sheet nào** từ `load_data` hay profiling; nó phải tự liệt kê sheet (ví dụ `pd.ExcelFile(path).sheet_names`).
+- Mọi chênh lệch ở G1_02 (và các task trên `hr.xlsx`, `clinic_messy.xlsx`) giữa baseline và +profiling, cũng như giữa agent và ChatGPT (ChatGPT không có profile), phải được giải thích là lợi thế của pre-profiling. Kiểm chứng: `tests/test_sandbox.py::test_sandbox_load_data_gives_no_sheet_hint`.
+
+### 13.2 Cố định toàn bộ phiên bản
+
+- `sandbox/requirements-sandbox.txt`: pin trực tiếp các gói phân tích (một nguồn cho cả image lẫn venv).
+- `requirements-lock.txt` (`pip freeze`): pin **mọi** gói, kể cả gián tiếp (pydantic, langsmith, tzdata, python-dateutil...). Cài lại môi trường y hệt: `pip install -r requirements-lock.txt`.
+- Image `eda-sandbox:1.1` được build với `-c requirements-lock.txt`, nên các gói có ở cả hai phía (kể cả gián tiếp) cùng phiên bản với host. Kiểm chứng bằng test so `pip freeze` trong image với file lock.

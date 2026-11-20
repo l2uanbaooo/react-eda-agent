@@ -1,0 +1,63 @@
+# Exact versions of EVERY installed package (direct + indirect), from pip freeze of the
+# working venv (Windows, Python 3.11.9). ASCII only. Reproduce the env exactly with:
+#   .venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+# The Docker image uses this file as a constraints file (-c) so shared indirect
+# dependencies (python-dateutil, pytz, tzdata, ...) match the host too.
+# Regenerate after changing requirements*.txt:  pip freeze > requirements-lock.txt (keep this header).
+annotated-types==0.8.0
+anyio==4.16.0
+astroid==3.3.11
+certifi==2026.10.23
+charset-normalizer==3.5.2
+cloudpickle==3.1.3
+colorama==0.4.6
+contourpy==1.3.3
+cycler==0.12.1
+dill==0.4.1
+et_xmlfile==2.0.0
+fonttools==4.68.0
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.20
+iniconfig==2.3.1
+isort==5.13.2
+joblib==1.6.0
+jsonpatch==1.48
+jsonpointer==3.12
+kiwisolver==1.5.1
+langchain-core==0.3.28
+langsmith==0.2.11
+matplotlib==3.9.2
+mccabe==0.7.0
+numpy==2.1.3
+openpyxl==3.1.5
+orjson==3.13.0
+packaging==24.2
+pandas==2.2.3
+pillow==13.0.0
+platformdirs==4.14.8
+plotly==5.24.1
+pluggy==1.7.0
+pyarrow==18.1.0
+pydantic==2.14.4
+pydantic_core==2.50.5
+pylint==3.3.3
+pyparsing==3.3.3
+pytest==8.3.4
+python-dateutil==4.0.0
+pytz==2026.6
+PyYAML==6.0.3
+requests==2.32.3
+requests-toolbelt==1.0.0
+ruff==0.8.4
+scikit-learn==1.5.2
+scipy==1.14.1
+seaborn==0.13.2
+tenacity==9.2.1
+threadpoolctl==3.8.0
+tomlkit==0.15.2
+typing-inspection==0.4.5
+typing_extensions==4.16.0
+tzdata==2026.6
+urllib3==2.8.0

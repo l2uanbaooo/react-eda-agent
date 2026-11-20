@@ -24,6 +24,7 @@ class SubprocessSandbox(Sandbox):
             "EDA_OUTPUT_DIR": str(self.output_dir),
             "EDA_CODE_DIR": str(DATA_PY_PATH.parent),
             "EDA_MAX_STDOUT_CHARS": str(self.cfg.max_stdout_chars),
+            "EDA_DEFAULT_SHEET": self.cfg.sandbox_default_sheet,
             "PYTHONIOENCODING": "utf-8",
             "PYTHONUTF8": "1",
             "PYTHONUNBUFFERED": "1",

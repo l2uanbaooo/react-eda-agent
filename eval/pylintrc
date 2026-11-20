@@ -1,0 +1,35 @@
+# Fixed pylint configuration for scoring the AGENT's code (metric E3).
+# Do not change it after results exist: scores would no longer be comparable.
+#
+# The scored file = all successfully executed code blocks of one task,
+# concatenated in order. Disabled checks are artefacts of that format
+# (REPL-style steps, pre-imported sandbox names), not real quality problems.
+
+[MAIN]
+jobs=1
+persistent=no
+
+[MESSAGES CONTROL]
+disable=
+    missing-module-docstring,
+    missing-function-docstring,
+    missing-class-docstring,
+    invalid-name,
+    pointless-statement,
+    expression-not-assigned,
+    wrong-import-position,
+    wrong-import-order,
+    ungrouped-imports,
+    reimported,
+    redefined-builtin,
+    redefined-outer-name
+
+[FORMAT]
+max-line-length=120
+
+[VARIABLES]
+# names pre-defined in the sandbox namespace (sandbox/worker.py)
+additional-builtins=pd,np,px,go,load_data,save_fig,DATA_DIR,OUTPUT_DIR,answer
+
+[REPORTS]
+score=yes
